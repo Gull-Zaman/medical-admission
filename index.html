@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neurological Examination Proforma</title>
+<style>
+  :root{
+    --fg:#1f2937; --muted:#6b7280; --line:#e5e7eb; --bg:#ffffff;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial; color:var(--fg); background:var(--bg); margin:0}
+  .page{max-width:900px; margin:24px auto; padding:24px; border:1px solid var(--line); border-radius:12px}
+  header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:12px}
+  .title{font-size:1.5rem; font-weight:800}
+  .actions{display:flex; gap:8px; flex-wrap:wrap}
+  button{padding:8px 12px; border:1px solid var(--line); background:#f9fafb; cursor:pointer; border-radius:8px}
+  button:hover{background:#f3f4f6}
+  .grid{display:grid; gap:8px}
+  .grid.cols-2{grid-template-columns: 1fr 1fr}
+  .grid.cols-3{grid-template-columns: repeat(3, 1fr)}
+  .grid.cols-4{grid-template-columns: repeat(4, 1fr)}
+  .row{display:flex; gap:8px; align-items:center}
+  h2{font-size:1rem; margin:16px 0 8px; padding-top:8px; border-top:2px solid var(--line)}
+  label{font-size:.9rem}
+  input[type="text"], input[type="number"], input[type="date"], textarea, select{width:100%; border:1px solid var(--line); border-radius:6px; padding:6px 8px; font-size:.92rem}
+  textarea{min-height:70px; resize:vertical}
+  .muted{color:var(--muted); font-size:.8rem}
+  table{width:100%; border-collapse:collapse; font-size:.9rem}
+  th, td{border:1px solid var(--line); padding:6px 8px; vertical-align:top}
+  th{background:#f9fafb; text-align:left}
+  .checkboxes{display:flex; flex-wrap:wrap; gap:10px}
+  .field{display:flex; align-items:center; gap:6px}
+  .field input[type="checkbox"]{transform:translateY(1px)}
+  footer{margin-top:12px; display:flex; justify-content:space-between; align-items:flex-end}
+  @page { size: A4; margin: 12mm }
+  @media print{
+    .page{border:none; border-radius:0; margin:0; padding:0}
+    .actions{display:none}
+    h2{page-break-after: avoid}
+    table{page-break-inside: avoid}
+    body{background:#fff}
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <div class="title">Neurological Examination Proforma</div>
+        <div class="muted">Fill, autosave to your browser, and print to A4</div>
+      </div>
+      <div class="actions">
+        <button id="printBtn" type="button">Print</button>
+        <button id="resetBtn" type="button">Reset</button>
+        <button id="exportBtn" type="button">Export</button>
+        <label class="field" style="gap:6px"><input id="importFile" type="file" accept="application/json" style="display:none"><button id="importBtn" type="button">Import</button></label>
+      </div>
+    </header>
+
+    <form id="neuroForm" autocomplete="on">
+      <!-- Patient Details -->
+      <section class="grid cols-2" style="gap:12px; margin-bottom:8px">
+        <div class="grid cols-2" style="gap:8px">
+          <div class="row"><label style="min-width:70px">Patient</label><input name="patient" type="text" placeholder="Name" /></div>
+          <div class="row"><label style="min-width:50px">MRN</label><input name="mrn" type="text" /></div>
+        </div>
+        <div class="grid cols-2" style="gap:8px">
+          <div class="row"><label style="min-width:50px">DOB</label><input name="dob" type="text" placeholder="DD/MM/YYYY" /></div>
+          <div class="row"><label style="min-width:50px">Date</label><input name="date" type="date" /></div>
+        </div>
+        <div class="row"><label style="min-width:70px">Examiner</label><input name="examiner" type="text" /></div>
+        <div class="row"><label style="min-width:70px">Location</label><input name="location" type="text" placeholder="Ward / Clinic" /></div>
+      </section>
+
+      <!-- General Inspection -->
+      <h2>General Inspection</h2>
+      <div class="checkboxes small">
+        <label class="field"><input name="gi_comfortable" type="checkbox"/> Comfortable</label>
+        <label class="field"><input name="gi_posture_normal" type="checkbox"/> Normal posture</label>
+        <label class="field"><input name="gi_no_movements" type="checkbox"/> No involuntary movements</label>
+        <label class="field"><input name="gi_no_wasting" type="checkbox"/> No wasting/fasciculations</label>
+        <label class="field"><input name="gi_no_aids" type="checkbox"/> Aids: None</label>
+      </div>
+      <div style="margin-top:6px"><textarea name="gi_notes" placeholder="Abnormal findings / notes"></textarea></div>
+
+      <!-- Higher Mental Functions -->
+      <h2>Higher Mental Functions</h2>
+      <div class="grid cols-4">
+        <div class="row"><label>GCS</label><input name="hmf_gcs" type="text" placeholder="E/V/M" /></div>
+        <div class="row"><label>Orientation</label><input name="hmf_orientation" type="text" placeholder="P / P / T" /></div>
+        <div class="row"><label>Attention</label><input name="hmf_attention" type="text" placeholder="e.g., serial 7s" /></div>
+        <div class="row"><label>Memory</label><input name="hmf_memory" type="text" placeholder="immediate / recent" /></div>
+      </div>
+      <div class="checkboxes small" style="margin-top:6px">
+        <label class="field"><input name="hmf_speech_normal" type="checkbox"/> Speech normal</label>
+        <label class="field"><input name="hmf_dysphasic" type="checkbox"/> Dysphasic</label>
+        <label class="field"><input name="hmf_dysarthric" type="checkbox"/> Dysarthric</label>
+        <label class="field"><input name="hmf_neglect_absent" type="checkbox"/> Neglect absent</label>
+      </div>
+
+      <!-- Cranial Nerves -->
+      <h2>Cranial Nerves</h2>
+      <table>
+        <thead>
+          <tr><th style="width:80px">CN</th><th>Key Tests</th><th>Findings</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>II</td>
+            <td>VA, VF, pupils, fundi, colour vision</td>
+            <td class="grid cols-3">
+              <input name="cn2_va" type="text" placeholder="VA e.g., 6/6 R, 6/6 L" />
+              <select name="cn2_vf"><option value="">VF</option><option>Full</option><option>Defect</option></select>
+              <select name="cn2_rapd"><option value="">RAPD</option><option>Absent</option><option>Present R</option><option>Present L</option></select>
+            </td>
+          </tr>
+          <tr>
+            <td>III/IV/VI</td>
+            <td>EOM, ptosis, pupils</td>
+            <td class="grid cols-4">
+              <select name="cn3_eom"><option>EOM full</option><option>Restricted</option></select>
+              <select name="cn3_ptosis"><option>No ptosis</option><option>Ptosis R</option><option>Ptosis L</option></select>
+              <select name="cn3_pupils"><option>PEARL</option><option>Unequal</option><option>Non-reactive</option></select>
+              <input name="cn3_notes" type="text" placeholder="notes" />
+            </td>
+          </tr>
+          <tr>
+            <td>V</td>
+            <td>Sensation V1/V2/V3, masseter, corneal</td>
+            <td class="grid cols-3">
+              <select name="cn5_sens"><option>Normal</option><option>Reduced R</option><option>Reduced L</option><option>Absent R</option><option>Absent L</option></select>
+              <select name="cn5_motor"><option>Normal</option><option>Weak</option></select>
+              <input name="cn5_notes" type="text" placeholder="notes" />
+            </td>
+          </tr>
+          <tr>
+            <td>VII</td>
+            <td>Facial movements</td>
+            <td class="grid cols-3">
+              <select name="cn7_symmetry"><option>Symmetric</option><option>Lower motor neuron R</option><option>Lower motor neuron L</option><option>Upper motor neuron R</option><option>Upper motor neuron L</option></select>
+              <input name="cn7_notes" type="text" placeholder="notes" />
+              <span class="muted">(raise brow, close eyes, smile)</span>
+            </td>
+          </tr>
+          <tr>
+            <td>VIII</td>
+            <td>Hearing, Rinne, Weber, balance</td>
+            <td class="grid cols-4">
+              <select name="cn8_hearing"><option>Normal</option><option>Reduced R</option><option>Reduced L</option></select>
+              <select name="cn8_rinne"><option>Rinne +/+ (AC>BC)</option><option>Rinne - R</option><option>Rinne - L</option></select>
+              <select name="cn8_weber"><option>Central</option><option>Lateralises R</option><option>Lateralises L</option></select>
+              <input name="cn8_notes" type="text" placeholder="notes" />
+            </td>
+          </tr>
+          <tr>
+            <td>IX/X</td>
+            <td>Palate, uvula, gag, voice, swallow</td>
+            <td class="grid cols-3">
+              <select name="cn9_palate"><option>Midline / normal</option><option>Deviates R</option><option>Deviates L</option></select>
+              <select name="cn9_voice"><option>Normal</option><option>Nasal</option><option>Hoarse</option></select>
+              <input name="cn9_notes" type="text" placeholder="notes" />
+            </td>
+          </tr>
+          <tr>
+            <td>XI</td>
+            <td>SCM / trapezius</td>
+            <td class="grid cols-2">
+              <select name="cn11_power"><option>Normal</option><option>Weak R</option><option>Weak L</option></select>
+              <input name="cn11_notes" type="text" placeholder="notes" />
+            </td>
+          </tr>
+          <tr>
+            <td>XII</td>
+            <td>Tongue</td>
+            <td class="grid cols-3">
+              <select name="cn12_pos"><option>Midline</option><option>Deviates R</option><option>Deviates L</option></select>
+              <select name="cn12_wasting"><option>No wasting</option><option>Wasting/Fascic R</option><option>Wasting/Fascic L</option></select>
+              <input name="cn12_notes" type="text" placeholder="notes" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Motor System -->
+      <h2>Motor System</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Limb</th>
+            <th>Bulk</th>
+            <th>Tone</th>
+            <th>Power (MRC)</th>
+            <th>Reflexes</th>
+            <th>Plantar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Helper selects -->
+          <!-- Rows: UL R, UL L, LL R, LL L -->
+          <script type="text/template" id="opts-bulk"><option>Normal</option><option>Reduced</option><option>Increased</option></script>
+          <script type="text/template" id="opts-tone"><option>Normal</option><option>↑ Spastic</option><option>↑ Rigid</option><option>↓ Hypotonia</option></script>
+          <script type="text/template" id="opts-power"><option>5</option><option>4+</option><option>4</option><option>4-</option><option>3</option><option>2</option><option>1</option><option>0</option></script>
+          <script type="text/template" id="opts-reflex"><option>++ (normal)</option><option>0</option><option>+ (reduced)</option><option>+++ (brisk)</option><option>++++ (clonus)</option></script>
+          <script type="text/template" id="opts-plantar"><option>Flexor</option><option>Extensor</option><option>Equivocal</option></script>
+          <tr>
+            <td>UL R</td>
+            <td><select name="ulr_bulk"></select></td>
+            <td><select name="ulr_tone"></select></td>
+            <td><select name="ulr_power"></select></td>
+            <td><select name="ulr_reflex"></select></td>
+            <td><select name="ulr_plantar"></select></td>
+          </tr>
+          <tr>
+            <td>UL L</td>
+            <td><select name="ull_bulk"></select></td>
+            <td><select name="ull_tone"></select></td>
+            <td><select name="ull_power"></select></td>
+            <td><select name="ull_reflex"></select></td>
+            <td><select name="ull_plantar"></select></td>
+          </tr>
+          <tr>
+            <td>LL R</td>
+            <td><select name="llr_bulk"></select></td>
+            <td><select name="llr_tone"></select></td>
+            <td><select name="llr_power"></select></td>
+            <td><select name="llr_reflex"></select></td>
+            <td><select name="llr_plantar"></select></td>
+          </tr>
+          <tr>
+            <td>LL L</td>
+            <td><select name="lll_bulk"></select></td>
+            <td><select name="lll_tone"></select></td>
+            <td><select name="lll_power"></select></td>
+            <td><select name="lll_reflex"></select></td>
+            <td><select name="lll_plantar"></select></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="muted" style="margin-top:4px">MRC: 0–5 (5 normal). Reflexes: ++ normal.</div>
+
+      <!-- Sensory System -->
+      <h2>Sensory System</h2>
+      <div class="grid cols-2">
+        <div class="row"><label style="min-width:120px">Light touch</label><select name="sen_lt"><option>Normal</option><option>Reduced R</option><option>Reduced L</option><option>Absent R</option><option>Absent L</option></select></div>
+        <div class="row"><label style="min-width:120px">Pinprick</label><select name="sen_pp"><option>Normal</option><option>Reduced R</option><option>Reduced L</option><option>Absent R</option><option>Absent L</option></select></div>
+        <div class="row"><label style="min-width:120px">Temperature</label><select name="sen_temp"><option>Normal</option><option>Reduced R</option><option>Reduced L</option></select></div>
+        <div class="row"><label style="min-width:120px">Vibration (128 Hz)</label><select name="sen_vib"><option>Normal</option><option>Reduced R</option><option>Reduced L</option></select></div>
+        <div class="row"><label style="min-width:120px">Proprioception</label><select name="sen_prop"><option>Normal</option><option>Reduced R</option><option>Reduced L</option></select></div>
+        <div class="row"><label style="min-width:120px">Pattern</label><select name="sen_pattern"><option>None</option><option>Dermatomal</option><option>Glove-stocking</option><option>Hemianaesthesia</option></select></div>
+      </div>
+
+      <!-- Coordination -->
+      <h2>Coordination</h2>
+      <div class="grid cols-2">
+        <div class="row"><label style="min-width:160px">Upper limb</label><select name="coord_ul"><option>Normal</option><option>Dysmetria</option><option>Dysdiadochokinesia</option><option>Intention tremor</option></select></div>
+        <div class="row"><label style="min-width:160px">Lower limb</label><select name="coord_ll"><option>Normal</option><option>Ataxic</option><option>Heel–shin impaired</option></select></div>
+      </div>
+
+      <!-- Gait & Balance -->
+      <h2>Gait & Balance</h2>
+      <div class="grid cols-2">
+        <div class="row"><label style="min-width:120px">Gait</label><select name="gait"><option>Normal</option><option>Hemiplegic</option><option>Spastic</option><option>Cerebellar</option><option>Parkinsonian</option></select></div>
+        <div class="row"><label style="min-width:120px">Romberg</label><select name="romberg"><option>Negative</option><option>Positive</option></select></div>
+      </div>
+
+      <!-- Summary -->
+      <h2>Summary / Impression</h2>
+      <div class="row" style="align-items:flex-start">
+        <label class="field" style="min-width:230px"><input id="normalSummaryToggle" type="checkbox"/> Insert normal neurological exam summary</label>
+        <textarea id="summary" name="summary" placeholder="Localisation, differentials, plan"></textarea>
+      </div>
+
+      <footer>
+        <div class="row" style="gap:16px"><span>Signature: ____________________________</span><span>Time: ________</span></div>
+        <span class="muted">Data stays in your browser (localStorage). Export/Import available.</span>
+      </footer>
+    </form>
+  </div>
+
+<script>
+(function(){
+  const form = document.getElementById('neuroForm');
+  const KEY = 'neuroProforma.v2';
+
+  // Populate select options for motor table from templates
+  function fillOpts(sel, tplId){ const t = document.getElementById(tplId); if(t){ sel.innerHTML = t.innerHTML; } }
+  ['ulr','ull','llr','lll'].forEach(prefix=>{
+    fillOpts(document.querySelector(`select[name="${prefix}_bulk"]`),'opts-bulk');
+    fillOpts(document.querySelector(`select[name="${prefix}_tone"]`),'opts-tone');
+    fillOpts(document.querySelector(`select[name="${prefix}_power"]`),'opts-power');
+    fillOpts(document.querySelector(`select[name="${prefix}_reflex"]`),'opts-reflex');
+    fillOpts(document.querySelector(`select[name="${prefix}_plantar"]`),'opts-plantar');
+  });
+
+  // Default values for a normal exam
+  const defaults = {
+    gi_comfortable:true, gi_posture_normal:true, gi_no_movements:true, gi_no_wasting:true, gi_no_aids:true,
+    hmf_speech_normal:true, hmf_neglect_absent:true,
+    cn2_vf:'Full', cn2_rapd:'Absent', cn3_eom:'EOM full', cn3_ptosis:'No ptosis', cn3_pupils:'PEARL',
+    cn5_sens:'Normal', cn5_motor:'Normal', cn7_symmetry:'Symmetric', cn8_hearing:'Normal', cn8_rinne:'Rinne +/+ (AC>BC)', cn8_weber:'Central',
+    cn9_palate:'Midline / normal', cn9_voice:'Normal', cn11_power:'Normal', cn12_pos:'Midline', cn12_wasting:'No wasting',
+    ulr_bulk:'Normal', ulr_tone:'Normal', ulr_power:'5', ulr_reflex:'++ (normal)', ulr_plantar:'Flexor',
+    ull_bulk:'Normal', ull_tone:'Normal', ull_power:'5', ull_reflex:'++ (normal)', ull_plantar:'Flexor',
+    llr_bulk:'Normal', llr_tone:'Normal', llr_power:'5', llr_reflex:'++ (normal)', llr_plantar:'Flexor',
+    lll_bulk:'Normal', lll_tone:'Normal', lll_power:'5', lll_reflex:'++ (normal)', lll_plantar:'Flexor',
+    sen_lt:'Normal', sen_pp:'Normal', sen_temp:'Normal', sen_vib:'Normal', sen_prop:'Normal', sen_pattern:'None',
+    coord_ul:'Normal', coord_ll:'Normal', gait:'Normal', romberg:'Negative'
+  };
+
+  // Autosave/restore
+  function getAllFields(){
+    return Array.from(form.querySelectorAll('input, textarea, select'))
+      .filter(el=>el.name && el.type!=='file');
+  }
+  function save(){
+    const data = {};
+    getAllFields().forEach(el=>{
+      if(el.type==='checkbox'){ data[el.name] = el.checked; }
+      else { data[el.name] = el.value; }
+    });
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }
+  function load(){
+    // preload defaults once
+    Object.entries(defaults).forEach(([k,v])=>{
+      const el = form.elements[k];
+      if(!el) return;
+      if(el.type==='checkbox') el.checked = !!v; else if(!el.value) el.value = v;
+    });
+
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return;
+    try{
+      const data = JSON.parse(raw);
+      Object.entries(data).forEach(([k,v])=>{
+        const el = form.elements[k]; if(!el) return;
+        if(el.type==='checkbox') el.checked = !!v; else el.value = v;
+      });
+    }catch(e){ console.warn('restore failed', e); }
+  }
+
+  // Event listeners
+  form.addEventListener('input', save);
+  document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    if(confirm('Clear all fields and local storage?')){
+      form.reset();
+      localStorage.removeItem(KEY);
+      load(); // reapply defaults
+    }
+  });
+
+  // Export/Import JSON
+  document.getElementById('exportBtn').addEventListener('click', ()=>{
+    const blob = new Blob([localStorage.getItem(KEY) || '{}'], {type:'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'neuro-exam.json'; a.click();
+  });
+  const importBtn = document.getElementById('importBtn');
+  const importFile = document.getElementById('importFile');
+  importBtn.addEventListener('click', ()=> importFile.click());
+  importFile.addEventListener('change', ()=>{
+    const f = importFile.files[0]; if(!f) return;
+    const reader = new FileReader();
+    reader.onload = e => { try{ localStorage.setItem(KEY, e.target.result); load(); save(); } catch(err){ alert('Import failed'); } };
+    reader.readAsText(f);
+  });
+
+  // Normal summary toggle
+  const normalToggle = document.getElementById('normalSummaryToggle');
+  const summary = document.getElementById('summary');
+  const normalText = `Alert, oriented. Speech fluent, no dysphasia or dysarthria. Cranial nerves II–XII intact: VA adequate, visual fields full, pupils equal and reactive, EOM full, no ptosis, normal facial sensation and movements, hearing grossly normal with Rinne positive bilaterally and Weber central, palate midline with normal voice and swallow, SCM/trapezius normal, tongue midline with no wasting. Motor: normal bulk and tone, power 5/5 in all muscle groups, reflexes ++ and symmetric, plantar responses flexor bilaterally. Sensory: light touch, pinprick, temperature, vibration and proprioception intact with no length-dependent pattern. Coordination normal in upper and lower limbs. Gait normal, Romberg negative.`;
+  normalToggle.addEventListener('change', ()=>{
+    if(normalToggle.checked){
+      if(!summary.value || confirm('Overwrite summary with normal exam text?')){ summary.value = normalText; save(); }
+    }
+  });
+
+  // Init
+  load();
+})();
+</script>
+</body>
+</html>
